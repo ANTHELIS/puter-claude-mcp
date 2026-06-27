@@ -101,7 +101,7 @@ async function askClaudeViaRelay(prompt, model) {
 
 // --- MCP Server ---
 const server = new Server(
-    { name: "puter-claude-mcp", version: "2.0.0" },
+    { name: "@anthelis/puter-claude-mcp", version: "1.0.0" },
     { capabilities: { tools: {} } }
 );
 

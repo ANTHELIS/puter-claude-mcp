@@ -1,4 +1,4 @@
-# puter-claude-mcp
+# @anthelis/puter-claude-mcp
 
 > **Free, unlimited Claude access for any AI coding agent or IDE — powered by [Puter.js](https://puter.com).**
 
@@ -39,13 +39,13 @@ Your IDE ──(MCP/stdio)──► index.js ──(HTTP)──► relay.js ◄�
 ### Option A: npx (Recommended — no install needed)
 ```bash
 # Run the relay server directly
-npx puter-claude-mcp relay
+npx @anthelis/puter-claude-mcp relay
 ```
 That's it! No cloning, no `npm install`.
 
 ### Option B: Install globally
 ```bash
-npm install -g puter-claude-mcp
+npm install -g @anthelis/puter-claude-mcp
 
 # Then run the relay:
 puter-claude-relay
@@ -53,8 +53,8 @@ puter-claude-relay
 
 ### Option C: Clone from source
 ```bash
-git clone https://github.com/YOUR_USERNAME/puter-claude-mcp.git
-cd puter-claude-mcp
+git clone https://github.com/ANTHELIS/@anthelis/puter-claude-mcp.git
+cd @anthelis/puter-claude-mcp
 npm install
 npm run relay
 ```
@@ -90,13 +90,13 @@ Add the following to your IDE's MCP configuration file:
   "mcpServers": {
     "puter-claude": {
       "command": "npx",
-      "args": ["-y", "puter-claude-mcp"]
+      "args": ["-y", "@anthelis/puter-claude-mcp"]
     }
   }
 }
 ```
 
-> If you cloned from source, use `"command": "node"` and `"args": ["/absolute/path/to/puter-claude-mcp/index.js"]` instead.
+> If you cloned from source, use `"command": "node"` and `"args": ["/absolute/path/to/@anthelis/puter-claude-mcp/index.js"]` instead.
 
 | IDE | Config file location |
 |---|---|

@@ -1,5 +1,5 @@
 {
-  "name": "puter-claude-mcp",
+  "name": "@anthelis/puter-claude-mcp",
   "version": "1.0.0",
   "description": "Free, unlimited Claude access for any MCP-compatible IDE — powered by Puter.js. No API keys required.",
   "main": "index.js",
@@ -23,15 +23,15 @@
     "coding-agent",
     "llm"
   ],
-  "author": "",
+  "author": "anthelis <https://github.com/ANTHELIS>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/puter-claude-mcp.git"
+    "url": "https://github.com/ANTHELIS/puter-claude-mcp.git"
   },
-  "homepage": "https://github.com/YOUR_USERNAME/puter-claude-mcp#readme",
+  "homepage": "https://github.com/ANTHELIS/puter-claude-mcp#readme",
   "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/puter-claude-mcp/issues"
+    "url": "https://github.com/ANTHELIS/puter-claude-mcp/issues"
   },
   "files": [
     "index.js",
