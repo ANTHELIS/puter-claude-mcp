@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puter-Claude Web Bridge</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f1117;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        h1 { font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+        p.subtitle { color: #888; margin-bottom: 24px; text-align: center; max-width: 500px; }
+        .status {
+            width: 100%;
+            max-width: 560px;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .status.connected { background: #0d2b1f; color: #4ade80; border: 1px solid #166534; }
+        .status.disconnected { background: #2b0d0d; color: #f87171; border: 1px solid #991b1b; }
+        .status.busy { background: #1e1b0d; color: #facc15; border: 1px solid #854d0e; }
+
+        .counter { display: flex; gap: 16px; margin-bottom: 20px; }
+        .counter-item {
+            background: #1a1d27;
+            border: 1px solid #2a2d3a;
+            border-radius: 8px;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .counter-item .num { font-size: 1.6rem; font-weight: 700; color: #7c83fd; }
+        .counter-item .label { font-size: 0.75rem; color: #666; margin-top: 2px; }
+
+        #log {
+            width: 100%;
+            max-width: 560px;
+            padding: 14px;
+            background: #1a1d27;
+            border: 1px solid #2a2d3a;
+            border-radius: 10px;
+            font-family: 'Cascadia Code', 'Consolas', monospace;
+            white-space: pre-wrap;
+            height: 320px;
+            overflow-y: auto;
+            font-size: 0.8rem;
+            color: #b0b8d0;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌉 Puter-Claude Web Bridge</h1>
+    <p class="subtitle">Keep this tab open while coding. This page silently routes IDE requests through Puter.js to Claude — for free!</p>
+    
+    <div id="statusEl" class="status disconnected">⏳ Connecting to local server...</div>
+    
+    <div class="counter">
+        <div class="counter-item">
+            <div class="num" id="reqCount">0</div>
+            <div class="label">Requests Handled</div>
+        </div>
+        <div class="counter-item">
+            <div class="num" id="errCount">0</div>
+            <div class="label">Errors</div>
+        </div>
+    </div>
+
+    <div id="log">Waiting to connect...\n</div>
+
+    <script>
+        const statusEl = document.getElementById('statusEl');
+        const logEl = document.getElementById('log');
+        let reqCount = 0, errCount = 0;
+        let isProcessing = false;
+
+        function log(msg) {
+            const time = new Date().toLocaleTimeString();
+            logEl.innerText += `[${time}] ${msg}\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function setStatus(state, msg) {
+            statusEl.className = 'status ' + state;
+            statusEl.innerText = msg;
+        }
+
+        async function pollForWork() {
+            try {
+                const res = await fetch('/api/poll');
+                if (!res.ok) throw new Error('Server error');
+                const data = await res.json();
+
+                if (!isProcessing) {
+                    setStatus('connected', '✅ Connected — Waiting for IDE requests...');
+                }
+
+                if (data.hasRequest && !isProcessing) {
+                    isProcessing = true;
+                    const { id, prompt, model } = data.request;
+                    setStatus('busy', `⚡ Processing request with ${model}...`);
+                    log(`\n📥 Request #${id} received for model: ${model}`);
+                    log(`   Prompt: ${prompt.slice(0, 80)}${prompt.length > 80 ? '...' : ''}`);
+
+                    try {
+                        log(`   Asking Claude via Puter.js...`);
+                        const response = await puter.ai.chat(prompt, { model });
+                        const text = response.message.content[0].text;
+                        log(`✅ Got ${text.length} chars. Sending back...`);
+
+                        await fetch('/api/submit', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id, success: true, text })
+                        });
+
+                        reqCount++;
+                        document.getElementById('reqCount').innerText = reqCount;
+                        log(`📤 Done!\n`);
+                    } catch (err) {
+                        log(`❌ Error: ${err.message}`);
+                        await fetch('/api/submit', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id, success: false, error: err.message })
+                        });
+                        errCount++;
+                        document.getElementById('errCount').innerText = errCount;
+                    } finally {
+                        isProcessing = false;
+                        setStatus('connected', '✅ Connected — Waiting for IDE requests...');
+                    }
+                }
+            } catch (e) {
+                setStatus('disconnected', '🔴 Disconnected — Retrying...');
+            }
+        }
+
+        // Initial message
+        log('Bridge started. Polling server...');
+        
+        // Poll every 1 second
+        setInterval(pollForWork, 1000);
+        
+        // Run immediately
+        pollForWork();
+    </script>
+</body>
+</html>
