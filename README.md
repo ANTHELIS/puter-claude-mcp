@@ -6,6 +6,8 @@ This is an MCP (Model Context Protocol) server that gives AI coding assistants l
 
 It uses **Puter.js** (the "User-Pays" model) via a local browser bridge, so the requests run through your own logged-in Puter account in a browser tab.
 
+> **Legal note:** Each user must log into their own [Puter.com](https://puter.com) account in the browser bridge. This project does not circumvent any API limits — it simply makes Puter's official free developer offering accessible via MCP. This project is not affiliated with, endorsed by, or sponsored by Puter or Anthropic. All Claude AI capabilities are provided by [Puter.js](https://github.com/HeyPuter/puter) under their [Terms of Service](https://puter.com/terms).
+
 ---
 
 ## How It Works
