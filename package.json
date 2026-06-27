@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "puter-claude-mcp": "./index.js",
-    "puter-claude-relay": "./relay.js"
+    "puter-claude-mcp": "index.js",
+    "puter-claude-relay": "relay.js"
   },
   "scripts": {
     "relay": "node relay.js",
@@ -27,7 +27,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ANTHELIS/puter-claude-mcp.git"
+    "url": "git+https://github.com/ANTHELIS/puter-claude-mcp.git"
   },
   "homepage": "https://github.com/ANTHELIS/puter-claude-mcp#readme",
   "bugs": {
