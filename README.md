@@ -53,8 +53,8 @@ puter-claude-relay
 
 ### Option C: Clone from source
 ```bash
-git clone https://github.com/ANTHELIS/@anthelis/puter-claude-mcp.git
-cd @anthelis/puter-claude-mcp
+git clone https://github.com/ANTHELIS/puter-claude-mcp.git
+cd puter-claude-mcp
 npm install
 npm run relay
 ```
