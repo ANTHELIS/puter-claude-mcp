@@ -1,6 +1,6 @@
 {
   "name": "@anthelis/puter-claude-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Free, unlimited Claude access for any MCP-compatible IDE — powered by Puter.js. No API keys required.",
   "main": "index.js",
   "type": "module",
