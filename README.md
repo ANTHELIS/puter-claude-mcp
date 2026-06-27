@@ -36,10 +36,27 @@ Your IDE ──(MCP/stdio)──► index.js ──(HTTP)──► relay.js ◄�
 
 ## Installation
 
+### Option A: npx (Recommended — no install needed)
+```bash
+# Run the relay server directly
+npx puter-claude-mcp relay
+```
+That's it! No cloning, no `npm install`.
+
+### Option B: Install globally
+```bash
+npm install -g puter-claude-mcp
+
+# Then run the relay:
+puter-claude-relay
+```
+
+### Option C: Clone from source
 ```bash
 git clone https://github.com/YOUR_USERNAME/puter-claude-mcp.git
 cd puter-claude-mcp
 npm install
+npm run relay
 ```
 
 ---
@@ -72,15 +89,14 @@ Add the following to your IDE's MCP configuration file:
 {
   "mcpServers": {
     "puter-claude": {
-      "command": "node",
-      "args": ["/absolute/path/to/puter-claude-mcp/index.js"],
-      "env": {}
+      "command": "npx",
+      "args": ["-y", "puter-claude-mcp"]
     }
   }
 }
 ```
 
-> **Tip:** Replace `/absolute/path/to/puter-claude-mcp/index.js` with the actual path on your machine.
+> If you cloned from source, use `"command": "node"` and `"args": ["/absolute/path/to/puter-claude-mcp/index.js"]` instead.
 
 | IDE | Config file location |
 |---|---|

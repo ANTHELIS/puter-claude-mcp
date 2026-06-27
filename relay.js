@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * relay.js — Run this ONCE manually: node relay.js
  * Keep it running. The browser and the MCP server both talk to this.

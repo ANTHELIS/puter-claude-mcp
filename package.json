@@ -1,17 +1,48 @@
 {
-  "name": "puter-mcp",
+  "name": "puter-claude-mcp",
   "version": "1.0.0",
-  "description": "",
+  "description": "Free, unlimited Claude access for any MCP-compatible IDE — powered by Puter.js. No API keys required.",
   "main": "index.js",
+  "type": "module",
+  "bin": {
+    "puter-claude-mcp": "./index.js",
+    "puter-claude-relay": "./relay.js"
+  },
   "scripts": {
     "relay": "node relay.js",
-    "start": "node index.js",
-    "stop": "powershell -Command \"Get-NetTCPConnection -LocalPort 8081 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }\""
+    "start": "node index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "mcp",
+    "claude",
+    "anthropic",
+    "puter",
+    "ai",
+    "free",
+    "model-context-protocol",
+    "coding-agent",
+    "llm"
+  ],
   "author": "",
-  "license": "ISC",
-  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/puter-claude-mcp.git"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/puter-claude-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/puter-claude-mcp/issues"
+  },
+  "files": [
+    "index.js",
+    "relay.js",
+    "public/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "cors": "^2.8.6",
