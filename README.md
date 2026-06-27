@@ -12,12 +12,34 @@ It uses **Puter.js** (the "User-Pays" model) via a local browser bridge, so the 
 
 ## How It Works
 
-```
-Your IDE ──(MCP/stdio)──► index.js ──(HTTP)──► relay.js ◄──(polls)── browser tab
-                                                              │
-                                                         puter.ai.chat()
-                                                              │
-                                                           Claude API (free!)
+```mermaid
+sequenceDiagram
+    participant IDE as 🖥️ Your IDE
+    participant MCP as index.js<br/>(MCP Server)
+    participant Relay as relay.js<br/>(Express Relay)
+    participant Bridge as 🌐 Browser Tab<br/>(localhost:8081)
+    participant Puter as ☁️ Puter.js<br/>/ Claude API
+
+    IDE->>MCP: call ask_claude("write a sort function")
+    MCP->>Relay: POST /api/request
+    Relay-->>MCP: { id: 42 }
+
+    loop Poll every 1s
+        Bridge->>Relay: GET /api/poll
+        Relay-->>Bridge: { hasRequest: true, prompt, model }
+    end
+
+    Bridge->>Puter: puter.ai.chat(prompt, { model })
+    Puter-->>Bridge: Claude's response ✅
+
+    Bridge->>Relay: POST /api/submit { id: 42, text }
+
+    loop Poll every 500ms
+        MCP->>Relay: GET /api/result/42
+        Relay-->>MCP: { ready: true, text }
+    end
+
+    MCP-->>IDE: Claude's response 🎉
 ```
 
 - **`relay.js`** — A small Express server you run once. It holds requests from the MCP server and delivers them to the browser.
